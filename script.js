@@ -1,95 +1,153 @@
-const questions = [
-  {
-    question: "What is 2 + 2?",
-    answers: ["3", "4", "5", "6"],
-    correct: 1
-  },
-  {
-    question: "Capital of France?",
-    answers: ["Berlin", "Madrid", "Paris", "Rome"],
-    correct: 2
-  },
-  {
-    question: "What is 10 / 2?",
-    answers: ["2", "3", "5", "8"],
-    correct: 2
-  },
-  {
-    question: "5 x 6 = ?",
-    answers: ["11", "30", "25", "20"],
-    correct: 1
-  },
-  {
-    question: "Which is a planet?",
-    answers: ["Moon", "Sun", "Mars", "Star"],
-    correct: 2
-  }
-];
-
-let currentQuestion = 0;
-let score = 0;
-let answered = false;
-
-const questionEl = document.getElementById("question");
-const answersEl = document.getElementById("answers");
-const scoreEl = document.getElementById("score");
-const nextBtn = document.getElementById("nextBtn");
-const progressEl = document.getElementById("progress");
-
-function loadQuestion() {
-  answered = false;
-  nextBtn.style.display = "none";
-
-  let q = questions[currentQuestion];
-  questionEl.innerText = q.question;
-  progressEl.innerText = `Question ${currentQuestion + 1} / ${questions.length}`;
-
-  answersEl.innerHTML = "";
-
-  q.answers.forEach((answer, index) => {
-    const btn = document.createElement("button");
-    btn.innerText = answer;
-    btn.classList.add("answer-btn");
-
-    btn.onclick = () => selectAnswer(btn, index);
-    answersEl.appendChild(btn);
-  });
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  color: white;
+  overflow-x: hidden;
 }
 
-function selectAnswer(button, index) {
-  if (answered) return;
-  answered = true;
-
-  let q = questions[currentQuestion];
-
-  if (index === q.correct) {
-    button.classList.add("correct");
-    score++;
-  } else {
-    button.classList.add("wrong");
-  }
-
-  scoreEl.innerText = `Score: ${score}`;
-  nextBtn.style.display = "inline-block";
+/* Floating background glow */
+body::before {
+  content: "";
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, #00f7ff55, transparent);
+  top: -200px;
+  left: -200px;
+  filter: blur(100px);
+  z-index: -1;
 }
 
-nextBtn.onclick = () => {
-  currentQuestion++;
-
-  if (currentQuestion < questions.length) {
-    loadQuestion();
-  } else {
-    showFinal();
-  }
-};
-
-function showFinal() {
-  questionEl.innerText = "Game Over 🎉";
-  answersEl.innerHTML = "";
-  progressEl.innerText = "";
-  nextBtn.style.display = "none";
-
-  scoreEl.innerText = `Final Score: ${score} / ${questions.length}`;
+.app {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
 }
 
-loadQuestion();
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  color: #00f7ff;
+  text-shadow: 0 0 20px #00f7ff, 0 0 40px #00f7ff;
+}
+
+.tagline {
+  opacity: 0.7;
+}
+
+/* Glass card */
+.quiz-container {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 0 40px rgba(0,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Top bar */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+/* Question */
+#question {
+  margin-top: 15px;
+  transition: all 0.4s ease;
+}
+
+/* Answers */
+.answers {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* Neon buttons */
+.answer-btn {
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.6);
+  color: #00f7ff;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Glow hover */
+.answer-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px #00f7ff;
+}
+
+/* Ripple effect */
+.answer-btn::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  background: rgba(0,247,255,0.4);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+  transition: width 0.4s ease, height 0.4s ease;
+}
+
+.answer-btn:active::after {
+  width: 200px;
+  height: 200px;
+}
+
+/* Correct / wrong */
+.correct {
+  background: #00ff88 !important;
+  color: black;
+  box-shadow: 0 0 20px #00ff88;
+}
+
+.wrong {
+  background: #ff3b3b !important;
+  color: white;
+  box-shadow: 0 0 20px #ff3b3b;
+}
+
+/* Next button */
+.next-btn {
+  margin-top: 20px;
+  padding: 12px;
+  width: 100%;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(90deg, #00f7ff, #00ff88);
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  display: none;
+  transition: 0.3s;
+}
+
+.next-btn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 20px #00f7ff;
+}
+
+/* Fade animation */
+.fade-in {
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(10px);}
+  to {opacity: 1; transform: translateY(0);}
+}
