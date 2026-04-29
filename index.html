@@ -11,32 +11,24 @@
 <div class="app">
 
   <header class="header">
-    <h1>QuizRush 🎮</h1>
-    <p class="tagline">Challenge your brain. Beat your score.</p>
+    <h1>QuizRush ⚡</h1>
+    <p class="tagline">Fast thinking. Sharp mind.</p>
   </header>
 
   <main class="quiz-container">
 
     <div class="top-bar">
-      <span id="progress">Question 1 / 5</span>
-      <span id="score">Score: 0</span>
+      <span id="progress"></span>
+      <span id="score"></span>
     </div>
 
-    <h2 id="question">Loading question...</h2>
+    <h2 id="question" class="fade-in">Loading...</h2>
 
-    <div id="answers" class="answers">
-      <!-- Buttons will be added by JavaScript -->
-    </div>
+    <div id="answers" class="answers"></div>
 
-    <div class="controls">
-      <button id="nextBtn">Next Question →</button>
-    </div>
+    <button id="nextBtn" class="next-btn">Next →</button>
 
   </main>
-
-  <footer class="footer">
-    <p>© 2026 QuizRush | Built for learning 🚀</p>
-  </footer>
 
 </div>
 
